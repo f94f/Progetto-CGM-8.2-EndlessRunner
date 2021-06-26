@@ -27,7 +27,7 @@ public class PlatformSpawnerScript : MonoBehaviour
         direction = 1; //up
 
         lastPos = new Vector3(platform.transform.position.x, platform.transform.position.y,
-            platform.transform.position.z - 0.2f);
+            platform.transform.position.z -0.2f); //devo aggiungere - 0.2f dopo poition.z
         //usare i bound quando ho degli oggetti legati tra loro. prendo le misure del bound, ovvero l'oggetto più grande 
         //dell'insieme di oggetti
 
@@ -56,8 +56,32 @@ public class PlatformSpawnerScript : MonoBehaviour
         Vector3 pos = lastPos;
         pos.z += size;
 
-        lastPos = new Vector3(pos.z, pos.y, pos.z - 0.2f);
+        lastPos = new Vector3(pos.x, pos.y, pos.z -0.2f); //devo agg -0.2f dopo pos.z
+
+        GameObject newObject = GroundVerticalPoolerScript.current.GetPooledObject();
+        //con il codice sopra creiamo una nuovo gameobject, lo chiamiamo newobject e richiamo la funzione
+        //che mi ritorna un newobject
+        //inoltre la variabile current è quella che ci permette di agganciarci allo script groundvertical..
+        //ora però devo gestire il caso in cui non mi ritorna niente, il caso null
+
+        if (newObject == null) return;
+        //il return serve ad uscire nel caso null
+
+        newObject.transform.position =
+            pos; //come posizione all'oggetto creato gli diamo pos. pos è l'ultima posizione +size
+        //dunque metto l'oggetto nell'ultima posizione quando finisce la piattaforma
+        newObject.transform.rotation = Quaternion.identity; //rimane la stessa rotazione
+        newObject.SetActive(true); //diventa visibile. è come mettere il segno di spunta sull'oggetto appena creato
+
+        //essendo che tale void viene richiamata ogni volta bisogna controllare il conteggio
+        if (--counterUp <= 0) {
+            CancelInvoke("SpawnInitialVertical"); 
+            //con questo comando decremento counterup di 1. se quello che rimane è minore uguale a zero usciamo dal cancelinvoke,
+            //che cancella l'invocazione, ossia la ripetizione
+                                                            
+            
     }
+}
 
     Bounds GetMaxBounds(GameObject g) //è una void con il nome della variabile (bounds) perchè ritorna un risultato quando la chiamo
     {
