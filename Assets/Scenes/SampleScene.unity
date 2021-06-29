@@ -227,6 +227,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundVertical
       objectReference: {fileID: 0}
+    - target: {fileID: 5142406816858108222, guid: 39463318e017e0c4799bc5fac89ba092, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39463318e017e0c4799bc5fac89ba092, type: 3}
 --- !u!1 &617537851
@@ -491,9 +495,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.19
-  m_Height: 2.55
+  m_Height: 2.045118
   m_Direction: 1
-  m_Center: {x: 0, y: 0.7898667, z: 0}
+  m_Center: {x: 0, y: 1.0423075, z: 0}
 --- !u!114 &769032847
 MonoBehaviour:
   m_ObjectHideFlags: 0

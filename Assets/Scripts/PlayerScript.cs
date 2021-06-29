@@ -10,13 +10,13 @@ public class PlayerScript : MonoBehaviour
     public Image startImage;
     bool started; //per tenere traccia se il gioco è già partito o no
     bool jumping; //serve per sapere se già saltando
-    Rigidbody rb;
-    Animator animator;
+    Rigidbody rb;  //private ?
+    Animator animator;  //private ?
     
     [SerializeField]
-    float speed;
+    float speed;  //private ?
     [SerializeField]
-    float jump;
+    float jump;  //private ?
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +52,14 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
+            //provo con la riga seguente per farlo saltare 
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    animator.SetTrigger("jump");
+            //    rb.AddForce(Vector3.up * jump, ForceMode.Impulse);
+            //}
+            //fine aggiunta mia per prova. da cancellare per prova solo
+            
             if (SwipeManager.IsSwipingUp())  //se c'è lo swipe verso sopra, salto
             {
                 Jump();
