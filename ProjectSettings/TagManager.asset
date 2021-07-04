@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - terrain
+  - obstacle
+  - fence
+  - diamond
   layers:
   - Default
   - TransparentFX
