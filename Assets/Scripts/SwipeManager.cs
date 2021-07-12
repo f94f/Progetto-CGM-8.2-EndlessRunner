@@ -39,9 +39,9 @@ public class SwipeManager : MonoBehaviour
  
     [Tooltip("Whether to detect eight or four cardinal directions")]
     [SerializeField] bool useEightDirections = false;
- 
+
     #endregion
- 
+
     const float eightDirAngle = 0.906f;
     const float fourDirAngle = 0.5f;
     const float defaultDPI = 72f;
@@ -120,7 +120,7 @@ public class SwipeManager : MonoBehaviour
                 // Swipe was not long enough, abort
                 if (!instance.triggerSwipeAtMinLength) {
                     if (Application.isEditor) {
-                        Debug.Log("[SwipeManager] Swipe was not long enough.");
+                        //Debug.Log("[SwipeManager] Swipe was not long enough.");
                     }
  
                     swipeDirection = Swipe.None;
@@ -141,8 +141,57 @@ public class SwipeManager : MonoBehaviour
             swipeDirection = Swipe.None;
         }
     }
- 
-	public static bool IsSwiping			 () {	  return swipeDirection != Swipe.None; 			}
+
+    static void DetectTouch()
+    {
+        if (Input.GetMouseButtonDown(0) || Input.touches.Length > 0)
+        {
+            // Swipe already ended, don't detect until a new swipe has begun
+            if (swipeEnded)
+            {
+                return;
+            }
+            var player = GameObject.FindGameObjectWithTag("Player");
+            var playerScreenPoint = Camera.main.WorldToScreenPoint(player.transform.position);
+            var mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (mouse.x < playerScreenPoint.x)
+                {
+                    swipeDirection = Swipe.Left;
+                    return;
+                }
+                else if (mouse.x > playerScreenPoint.x)
+                {
+                    swipeDirection = Swipe.Right;
+                    return;
+                }
+            }
+            else
+            {
+                var touch = Input.GetTouch(0);
+                if (touch.position.x < Screen.width / 2)
+                {
+                    swipeDirection = Swipe.Left;
+                    return;
+                }
+                else if (touch.position.x > Screen.width / 2)
+                {
+                    swipeDirection = Swipe.Right;
+                    return;
+                }
+            }
+
+            swipeDirection = Swipe.None;
+        }
+        else
+        {
+            swipeDirection = Swipe.None;
+        }
+    }
+
+    public static bool IsSwiping			 () {	  return swipeDirection != Swipe.None; 			}
     public static bool IsSwipingRight        () {     return IsSwipingDirection(Swipe.Right);   	}
     public static bool IsSwipingLeft         () {     return IsSwipingDirection(Swipe.Left);    	}
     public static bool IsSwipingUp           () {     return IsSwipingDirection(Swipe.Up);          }
@@ -151,9 +200,12 @@ public class SwipeManager : MonoBehaviour
     public static bool IsSwipingDownRight    () {     return IsSwipingDirection(Swipe.DownRight);   }
     public static bool IsSwipingUpLeft       () {     return IsSwipingDirection(Swipe.UpLeft);      }
     public static bool IsSwipingUpRight      () {     return IsSwipingDirection(Swipe.UpRight);     }
- 
+
+    public static bool IsTouchLeft() { return IsTouchingDirection(Swipe.Left); }
+    public static bool IsTouchRight() { return IsTouchingDirection(Swipe.Right); }
+
     #region Helper Functions
- 
+
     static bool GetTouchInput ()
     {
         if (Input.touches.Length > 0) {
@@ -220,6 +272,12 @@ public class SwipeManager : MonoBehaviour
         DetectSwipe();
         return swipeDirection == swipeDir;
     }
- 
+
+    static bool IsTouchingDirection(Swipe swipeDir)
+    {
+        DetectTouch();
+        return swipeDirection == swipeDir;
+    }
+
     #endregion
 }

@@ -11,6 +11,7 @@ public class PlayerScript : MonoBehaviour
     public Image startImage;
     bool started; //per tenere traccia se il gioco è già partito o no
     bool jumping; //serve per sapere se già saltando
+    bool slide; ////serve per sapere se già slide
     Rigidbody rb;  //private ?
     Animator animator;  //private ?
 
@@ -25,6 +26,11 @@ public class PlayerScript : MonoBehaviour
     float jump;  //private ?
 
     int turn;// mi serve per sapere da che parte è girato il player
+
+    [SerializeField] private Transform movePoint; //Per muovere il personaggio dentro la corsia
+    [SerializeField] private LayerMask whatStopsMovement; //Per non andare oltre
+    public float moveSpeed = 5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,8 +40,8 @@ public class PlayerScript : MonoBehaviour
         started = false;
         jumping = false;
         animator.SetBool("idle", true);
-        
 
+        //movePoint.parent = null;
     }
 
     // Update is called once per frame
@@ -50,23 +56,20 @@ public class PlayerScript : MonoBehaviour
                 started = true;
                 turn = 1; //Up
                 //Faccio partire lo spawn delle piattaforme
-                PlatformSpawnerScript.current.BeginToSpawn() ;
+                PlatformSpawnerScript.current.BeginToSpawn();
+
                 animator.SetBool("idle", false);  //imposto la variabile idle a false, succede che poi si passa in RunForward
 
                 startImage.enabled = false;
 
                 ScoreManagerScript.current.StartScore();
-
-
-
             }
-            
         }
         else
         {
-
             if (!PlatformSpawnerScript.current.gameOver)
             {
+                //transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
                 //provo con la riga seguente per farlo saltare 
                 //if (Input.GetMouseButtonDown(0))
                 //{
@@ -81,18 +84,34 @@ public class PlayerScript : MonoBehaviour
                 }
                 else if (SwipeManager.IsSwipingLeft())
                 {
-                    Debug.Log("Left");
                     TurnLeft();
                 }
                 else if (SwipeManager.IsSwipingRight())
                 {
-                    Debug.Log("Right");
                     TurnRight();
                 }
                 else if (SwipeManager.IsSwipingDown())
                 {
-                    Debug.Log("Slide");
                     Slide();
+                }
+                //else
+                //{
+                //    if (Input.GetMouseButtonDown(0))
+                //        transform.position += new Vector3(1f, 0f, 0f);
+                //}
+                //else if (SwipeManager.IsTouchLeft())
+                //{
+                //    MoveLeft();
+                //}
+                //else if (SwipeManager.IsTouchRight())
+                //{
+                //    MoveRigth();
+                //}
+
+                //Pugno distruttore
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    PoteriManager.current.ShootBullet(gameObject);
                 }
             }
 
@@ -105,10 +124,15 @@ public class PlayerScript : MonoBehaviour
         if (!jumping)
         {
             jumping = true; //Se non salta lo imposto a true
-            animator.SetTrigger("jump");
+            //animator.SetTrigger("jump");
+            animator.SetBool("saltar", jumping);
             rb.AddForce(Vector3.up * jump, ForceMode.Impulse);
         }
-        
+        else
+        {
+            //se c'è lo swipe verso sopra di nuovo, divento invisibile
+            PoteriManager.current.TurnInvisible();
+        }
     }
 
     void TurnLeft()
@@ -131,7 +155,7 @@ public class PlayerScript : MonoBehaviour
             rb.velocity = Vector3.right * speed;
             turn = 2; //right
         }
-        else if (turn == 2)
+        else if (turn == 4)
         {
             rb.velocity = Vector3.forward * speed;
             turn = 1; //up
@@ -167,21 +191,53 @@ public class PlayerScript : MonoBehaviour
 
     void Slide()
     {
-        animator.SetTrigger("slide");
-        CapsuleCollider coll = gameObject.GetComponent<CapsuleCollider>();
+        if (!slide && !jumping)
+        {
+            slide = true;
+            animator.SetTrigger("slide");
+            CapsuleCollider coll = gameObject.GetComponent<CapsuleCollider>();
 
-        //salvo i valori del collaider per poterli ripristinare più avanti
-        colHeight = coll.height;
-        colRadius = coll.radius;
-        colCenterY = coll.center.y;
-        colCenterZ = coll.center.z;
+            //salvo i valori del collaider per poterli ripristinare più avanti
+            colHeight = coll.height;
+            colRadius = coll.radius;
+            colCenterY = coll.center.y;
+            colCenterZ = coll.center.z;
 
-        //vado a modificare il capsule collaider
-        coll.height = 1.69f;
-        coll.radius = 0.85f;
-        coll.center = new Vector3 (0, 0.43f, 0.34f);
+            //vado a modificare il capsule collaider
+            coll.height = 1f;
+            coll.radius = 0.7f;
+            coll.center = new Vector3 (0, 0.72f, 0.34f);
 
-        Invoke("ExitSlide",2f);
+            Invoke("ExitSlide", 1f);
+        }
+    }
+
+    void MoveLeft()
+    {
+        Debug.Log("Move Left");
+
+        //if (Physics2D.OverlapCircle(movePoint.position + new Vector3(-1, 0f, 0f), 0.2f, whatStopsMovement))
+        //{
+        //    movePoint.position += new Vector3(-1, 0f, 0f);
+        //}
+
+        //transform.position = Vector3.MoveTowards(transform.position, new Vector3(-1, 0f, 0f), moveSpeed * Time.deltaTime);
+
+        transform.position += new Vector3(-0.05f, 0f, 0f);
+    }
+
+    void MoveRigth()
+    {
+        Debug.Log("Move Rigth");
+
+        //if (Physics2D.OverlapCircle(movePoint.position + new Vector3(-1, 0f, 0f), 0.2f, whatStopsMovement))
+        //{
+        //    movePoint.position += new Vector3(1, 0f, 0f);
+        //}
+
+        //transform.position = Vector3.MoveTowards(transform.position, new Vector3(1, 0f, 0f), moveSpeed * Time.deltaTime);
+        if (Input.GetMouseButtonDown(0))
+            transform.position += new Vector3(1f * Time.deltaTime, 0f, 0f);
     }
 
     private void OnCollisionEnter(Collision collision) //void che si attiva ogni volta che il player entra in collsione con qualcosa
@@ -190,6 +246,7 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.tag == "terrain")  //Se l'oggetto con cui va in collsione è terrain
         {
             jumping = false;                       //jumping diventa falsa e quindi poi puo saltare
+            animator.SetBool("saltar", jumping);
         }
     }
 
@@ -219,8 +276,8 @@ public class PlayerScript : MonoBehaviour
                 AudioManageScript.current.PlaySound(diamondFx);
 
                 // Lo facciamo in questo modo perchè lo instaziamo momentaneamente, in quanto dopo lo andiamo a distruggere
-                GameObject part = Instantiate(particleDiamond, new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z + 4f), Quaternion.identity) as GameObject;
-                Destroy(part, 2f);
+                //GameObject part = Instantiate(particleDiamond, new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z + 4f), Quaternion.identity) as GameObject;
+                //Destroy(part, 2f);
             }
 
             
@@ -234,6 +291,8 @@ public class PlayerScript : MonoBehaviour
         coll.height = colHeight;
         coll.radius = colRadius;
         coll.center = new Vector3(0, colCenterY, colCenterZ);
+
+        slide = false;
     }
 
     public void Replay()

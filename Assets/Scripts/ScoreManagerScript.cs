@@ -64,7 +64,6 @@ public class ScoreManagerScript : MonoBehaviour
     {
         int rand = UnityEngine.Random.Range(0, 6);
 
-
         score += rand;
         ScoreText.text = score.ToString();
 

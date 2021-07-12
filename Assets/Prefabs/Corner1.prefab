@@ -159,7 +159,7 @@ BoxCollider:
   m_GameObject: {fileID: 306291826247146616}
   m_Material: {fileID: 13400000, guid: 2c054ab47686f5546b4bcb357878192a, type: 2}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 3.9552522, y: 3.802492, z: 0.40388203}
   m_Center: {x: -0.0017693043, y: 1.401246, z: 0.18558359}
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 306291826254418352}
   - component: {fileID: 306291826254418354}
   - component: {fileID: 306291826254418353}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Fence 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 306291826677607225}
   - component: {fileID: 306291826677607224}
   - component: {fileID: 306291826677607231}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider
   m_TagString: fence
   m_Icon: {fileID: 0}
@@ -364,7 +364,7 @@ GameObject:
   - component: {fileID: 306291827052398415}
   - component: {fileID: 306291827052398414}
   - component: {fileID: 306291827052398413}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Collider
   m_TagString: fence
   m_Icon: {fileID: 0}
@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 306291827598438026}
   - component: {fileID: 306291827598438036}
   - component: {fileID: 306291827598438027}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Fence
   m_TagString: Untagged
   m_Icon: {fileID: 0}

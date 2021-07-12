@@ -31,7 +31,7 @@ public class PlatformSpawnerScript : MonoBehaviour
         direction = 1; //up
 
         lastPos = new Vector3(platform.transform.position.x, platform.transform.position.y,
-            platform.transform.position.z -0.2f); //devo aggiungere - 0.2f dopo poition.z
+            platform.transform.position.z - 0.2f); //devo aggiungere - 0.2f dopo poition.z
         //usare i bound quando ho degli oggetti legati tra loro. prendo le misure del bound, ovvero l'oggetto più grande 
         //dell'insieme di oggetti
 
@@ -40,7 +40,7 @@ public class PlatformSpawnerScript : MonoBehaviour
         
         size = momSize.size.z; //prendo solo l'asse z di momSize perchè è l'unica dimensione che mi serve
         
-        counterUp = 5; //numero piattaforme iniziale
+        counterUp = 20; //numero piattaforme iniziale
         
         InvokeRepeating("SpawnInitialVertical", 0.1f, 0.1f); //comanda che lancia una void ripetutamente
 
@@ -69,7 +69,7 @@ public class PlatformSpawnerScript : MonoBehaviour
         Vector3 pos = lastPos;
         pos.z += size;
 
-        lastPos = new Vector3(pos.x, pos.y, pos.z -0.2f); //devo agg -0.2f dopo pos.z
+        lastPos = new Vector3(pos.x, pos.y, pos.z - 0.2f); //devo agg -0.2f dopo pos.z
 
         GameObject newObject = GroundVerticalPoolerScript.current.GetPooledObject();
         //con il codice sopra creiamo una nuovo gameobject, lo chiamiamo newobject e richiamo la funzione
@@ -93,10 +93,8 @@ public class PlatformSpawnerScript : MonoBehaviour
             CancelInvoke("SpawnInitialVertical"); 
             //con questo comando decremento counterup di 1. se quello che rimane è minore uguale a zero usciamo dal cancelinvoke,
             //che cancella l'invocazione, ossia la ripetizione
-                                                            
-            
+        }
     }
-}
 
     public void BeginToSpawn()
     {
@@ -174,7 +172,6 @@ public class PlatformSpawnerScript : MonoBehaviour
         }
 
         return b;
-
     }
 
     void CreateCombination()
