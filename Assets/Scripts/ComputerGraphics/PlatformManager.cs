@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformSpawner: MonoBehaviour
+public class PlatformManager: MonoBehaviour
 {
     [SerializeField]
     private GameObject plane, corner;
@@ -21,7 +21,7 @@ public class PlatformSpawner: MonoBehaviour
     float timeForCreation = 0.8f;
 
     public GameObject diamond;
-    public static PlatformSpawner current; //per interfecciare con altri script, in moda da richiamarla
+    public static PlatformManager current; //per interfecciare con altri script, in moda da richiamarla
 
     private void Awake() //la void viene letta quando il gioco parte
     {
@@ -46,24 +46,24 @@ public class PlatformSpawner: MonoBehaviour
 
         //InvokeRepeating("SpawnInitialVertical", 0.1f, 0.1f); //comanda che lancia una void ripetutamente
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 40; i++)
         {
             CreatePLatform();
         }
 
-        CreateCorner();
+        //CreateCorner();
 
-        for (int i = 0; i < 4; i++)
-        {
-            CreatePLatform();
-        }
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    CreatePLatform();
+        //}
 
-        CreateCorner();
+        //CreateCorner();
 
-        for (int i = 0; i < 4; i++)
-        {
-            CreatePLatform();
-        }
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    CreatePLatform();
+        //}
     }
 
     // Update is called once per frame

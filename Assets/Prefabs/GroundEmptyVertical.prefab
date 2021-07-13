@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 4803231905751729217}
   m_Layer: 0
   m_Name: GroundEmptyVertical
-  m_TagString: Untagged
+  m_TagString: fall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,8 +235,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.9552522, y: 3.802492, z: 0.40388203}
-  m_Center: {x: -0.0017693043, y: 1.401246, z: 0.18558359}
+  m_Size: {x: 3.9552522, y: 0.06775889, z: 6.1177044}
+  m_Center: {x: -0.0017693043, y: 0.27024525, z: -3.660571}
 --- !u!114 &4803231905751729217
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -58,6 +58,14 @@ public class ScoreManagerScript : MonoBehaviour
             }
         }
 
+        if (score%PoteriManager.current.passiBullet == 0)
+            PoteriManager.current.canBullet = true;
+
+        if (score%PoteriManager.current.passiBilocazione == 0)
+        {
+            PoteriManager.current.canBilocazione = true;
+            PoteriManager.current.StartBilocazione();
+        }
     }
 
     public void DiamondScore()

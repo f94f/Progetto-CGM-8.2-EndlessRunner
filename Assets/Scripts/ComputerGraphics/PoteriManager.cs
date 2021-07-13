@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class PoteriManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject player;
+    [SerializeField] private GameObject player;
 
-    [SerializeField]
-    private BulletManager bullet;
+    [SerializeField] private BulletManager bullet;
 
-    [SerializeField]
-    private Material invisibleMaterial;
+    [SerializeField] private Material invisibleMaterial;
     private Material defaultMaterial;
+    private bool isInvisible;
     public float timeInvisible = 1f;
 
-    private bool canBullet = true;
-    private bool canInvisibile = true;
+    [SerializeField] private Material normalMaterial;
+    [SerializeField] private Material bilocazioneMaterial;
+
+    public bool canBullet = true;
+    public bool canInvisibile = true;
+    public bool canBilocazione = true;
+
+    public int passiBullet = 50;
+    public int passiBilocazione = 100;
+    public int maxInvisibilita = 3;
 
     public static PoteriManager current; //per interfecciare con altri script, in moda da richiamarla
 
@@ -24,12 +30,6 @@ public class PoteriManager : MonoBehaviour
     {
         current = this; //è un istanza di questo script, serve per interfacciare altri script con questo
         defaultMaterial = player.GetComponent<Renderer>().material; //Salvo il materiale principale come default
-    }
-
-    //Ricaricare del potere
-    public void ChargePower(bool variabile)
-    {
-        variabile = true;
     }
 
     //Pugno distruttore
@@ -52,14 +52,45 @@ public class PoteriManager : MonoBehaviour
     {
         if (canInvisibile)
         {
+            isInvisible = true;
+            maxInvisibilita--;
             player.GetComponent<Renderer>().material = invisibleMaterial;
-            canInvisibile = false;
             Invoke("TurnNormal", timeInvisible);
+
+            if (maxInvisibilita == 0)
+                canInvisibile = false;
         }
     }
 
     public void TurnNormal()
     {
+        isInvisible = false;
         player.GetComponent<Renderer>().material = defaultMaterial;
+    }
+
+    public bool IsInvisible()
+    {
+        return isInvisible;
+    }
+
+    //Bilocazione
+    public void StartBilocazione()
+    {
+        Debug.Log("entro");
+        var all = GameObject.FindGameObjectsWithTag("terrain");
+        foreach(var g in all)
+        {
+            g.GetComponent<Renderer>().material = bilocazioneMaterial;
+        }
+        Invoke("EndBilocazione", 5f);
+    }
+
+    public void EndBilocazione()
+    {
+        var all = GameObject.FindGameObjectsWithTag("terrain");
+        foreach (var g in all)
+        {
+            g.GetComponent<Renderer>().material = normalMaterial;
+        }
     }
 }

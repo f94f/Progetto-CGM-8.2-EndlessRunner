@@ -6,9 +6,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerScript : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public Image startImage;
+    [SerializeField] private Image startImage;
+    [SerializeField] private GameObject CanvasButtons;
     bool started; //per tenere traccia se il gioco è già partito o no
     bool jumping; //serve per sapere se già saltando
     bool slide; ////serve per sapere se già slide
@@ -21,7 +22,7 @@ public class PlayerScript : MonoBehaviour
     float colHeight, colRadius, colCenterY, colCenterZ;
     
     [SerializeField]
-    float speed;  //private ?
+    float speedRuning;  //private ?
     [SerializeField]
     float jump;  //private ?
 
@@ -31,6 +32,18 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private LayerMask whatStopsMovement; //Per non andare oltre
     public float moveSpeed = 5f;
 
+
+    /*
+     * VERSINE 2
+     */
+    public AnimationCurve jumpCurve;
+    private float jumpTimer;
+    private float yPos;
+    private bool moveFoward;
+
+    public float[] xPos;
+    private int xPosIndex = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +52,7 @@ public class PlayerScript : MonoBehaviour
         
         started = false;
         jumping = false;
+        moveFoward = true;
         animator.SetBool("idle", true);
 
         //movePoint.parent = null;
@@ -51,82 +65,65 @@ public class PlayerScript : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))  //se c'è un click dell'utente sullo schermo, facciamo partire il personaggio
             {
-                rb.velocity = Vector3.forward * speed;  //faccio muovere il personaggio
-
                 started = true;
                 turn = 1; //Up
                 //Faccio partire lo spawn delle piattaforme
-                //PlatformSpawnerScript.current.BeginToSpawn();
+                PlatformSpawnerScript.current.BeginToSpawn();
 
                 animator.SetBool("idle", false);  //imposto la variabile idle a false, succede che poi si passa in RunForward
 
                 startImage.enabled = false;
+                CanvasButtons.SetActive(true);
 
                 ScoreManagerScript.current.StartScore();
+
+                PlatformManager.current.gameOver = false;
             }
         }
         else
         {
-            if (!PlatformSpawnerScript.current.gameOver)
+            if (PlatformManager.current.gameOver)
+                return;
+
+            if (SwipeManager.IsSwipingUp())  //se c'è lo swipe verso sopra, salto
+                Jump();
+            else if (SwipeManager.IsSwipingLeft())
+                TurnLeft();
+            else if (SwipeManager.IsSwipingRight())
+                TurnRight();
+            else if (SwipeManager.IsSwipingDown())
+                Slide();
+
+            if (jumping)
             {
-                //transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
-                //provo con la riga seguente per farlo saltare 
-                //if (Input.GetMouseButtonDown(0))
-                //{
-                //    animator.SetTrigger("jump");
-                //    rb.AddForce(Vector3.up * jump, ForceMode.Impulse);
-                //}
-                //fine aggiunta mia per prova. da cancellare per prova solo
+                yPos = jumpCurve.Evaluate(jumpTimer);
+                jumpTimer += Time.deltaTime;
 
-                if (SwipeManager.IsSwipingUp())  //se c'è lo swipe verso sopra, salto
+                if (jumpTimer > 1f)
                 {
-                    Jump();
-                }
-                else if (SwipeManager.IsSwipingLeft())
-                {
-                    TurnLeft();
-                }
-                else if (SwipeManager.IsSwipingRight())
-                {
-                    TurnRight();
-                }
-                else if (SwipeManager.IsSwipingDown())
-                {
-                    Slide();
-                }
-                //else
-                //{
-                //    if (Input.GetMouseButtonDown(0))
-                //        transform.position += new Vector3(1f, 0f, 0f);
-                //}
-                //else if (SwipeManager.IsTouchLeft())
-                //{
-                //    MoveLeft();
-                //}
-                //else if (SwipeManager.IsTouchRight())
-                //{
-                //    MoveRigth();
-                //}
-
-                //Pugno distruttore
-                if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    PoteriManager.current.ShootBullet(gameObject);
+                    jumpTimer = 0f;
+                    jumping = false;
+                    animator.SetBool("saltar", jumping);
                 }
             }
 
+            // Muovo il player
+            //transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.forward, Time.deltaTime * speed);
+            //transform.position = Vector3.MoveTowards(transform.position, new Vector3(xPos[xPosIndex], yPos, transform.position.z), Time.deltaTime * speed);
+            if (moveFoward)
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, yPos, transform.position.z) + transform.forward, Time.deltaTime * speedRuning);
         }
         
     }
 
+    #region ACTIONS
     void Jump()
     {
         if (!jumping)
         {
-            jumping = true; //Se non salta lo imposto a true
+            jumping = true; //Se non sta saltando lo imposto a true
             //animator.SetTrigger("jump");
             animator.SetBool("saltar", jumping);
-            rb.AddForce(Vector3.up * jump, ForceMode.Impulse);
         }
         else
         {
@@ -138,55 +135,11 @@ public class PlayerScript : MonoBehaviour
     void TurnLeft()
     {
         rb.transform.Rotate(0.0f, -90.0f, 0.0f);
-        //a seconda della posizione in cui si trova lo faccio muovere
-
-        if (turn == 1)
-        {
-            rb.velocity = Vector3.left * speed;
-            turn = 4; //right
-        }
-        else if (turn == 2)
-        {
-            rb.velocity = Vector3.back * speed;
-            turn = 3; //down
-        }
-        else if (turn == 3)
-        {
-            rb.velocity = Vector3.right * speed;
-            turn = 2; //right
-        }
-        else if (turn == 4)
-        {
-            rb.velocity = Vector3.forward * speed;
-            turn = 1; //up
-        }
     } 
 
     void TurnRight()
     {
         rb.transform.Rotate(0.0f,90.0f,0.0f);
-        //a seconda della posizione in cui si trova lo faccio muovere
-
-        if (turn == 1)
-        {
-            rb.velocity = Vector3.right * speed;
-            turn = 2; //right
-        }
-        else if (turn==2)
-        {
-            rb.velocity = Vector3.back * speed;
-            turn = 3; //down
-        }
-        else if (turn == 3)
-        {
-            rb.velocity = Vector3.left * speed;
-            turn = 4; //left
-        }
-        else if (turn == 4)
-        {
-            rb.velocity = Vector3.forward * speed;
-            turn = 1; //up
-        }
     } 
 
     void Slide()
@@ -210,6 +163,17 @@ public class PlayerScript : MonoBehaviour
 
             Invoke("ExitSlide", 1f);
         }
+    }
+
+    void ExitSlide()
+    {
+        CapsuleCollider coll = gameObject.GetComponent<CapsuleCollider>();
+        //vado a ripristinare il capsule collaider
+        coll.height = colHeight;
+        coll.radius = colRadius;
+        coll.center = new Vector3(0, colCenterY, colCenterZ);
+
+        slide = false;
     }
 
     void MoveLeft()
@@ -239,36 +203,35 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
             transform.position += new Vector3(1f * Time.deltaTime, 0f, 0f);
     }
+    #endregion
 
-    private void OnCollisionEnter(Collision collision) //void che si attiva ogni volta che il player entra in collsione con qualcosa
-                                                    //collsion rappresenta l'oggetto con cui il playrer va in collsione
-    {
-        if (collision.gameObject.tag == "terrain")  //Se l'oggetto con cui va in collsione è terrain
-        {
-            jumping = false;                       //jumping diventa falsa e quindi poi puo saltare
-            animator.SetBool("saltar", jumping);
-        }
-    }
-
+    #region TRIGGERS
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "obstacle")
+        if (other.gameObject.tag == "obstacle" && !PoteriManager.current.IsInvisible())
         {
             animator.SetTrigger("fall1");
-
-            PlatformSpawnerScript.current.gameOver=true;
-
             ScoreManagerScript.current.StopScore();
+            PlatformSpawnerScript.current.gameOver = true;
+            moveFoward = false;
         }
         else if (other.gameObject.tag == "fence")
         {
             animator.SetTrigger("fall2");
             ScoreManagerScript.current.StopScore();
+            rb.velocity = -Vector3.up * speedRuning + transform.forward * speedRuning;
+            PlatformManager.current.gameOver = true;
         }
-
+        else if (other.gameObject.tag == "fall")
+        {
+            animator.SetTrigger("fall2");
+            ScoreManagerScript.current.StopScore();
+            rb.velocity = -Vector3.up * speedRuning;
+            PlatformManager.current.gameOver = true;
+            moveFoward = false;
+        }
         else if (other.gameObject.tag == "diamond")
         {
-
             if (!PlatformSpawnerScript.current.gameOver)
             {
                 Destroy(other.gameObject);
@@ -276,24 +239,12 @@ public class PlayerScript : MonoBehaviour
                 AudioManageScript.current.PlaySound(diamondFx);
 
                 // Lo facciamo in questo modo perchè lo instaziamo momentaneamente, in quanto dopo lo andiamo a distruggere
-                //GameObject part = Instantiate(particleDiamond, new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z + 4f), Quaternion.identity) as GameObject;
-                //Destroy(part, 2f);
+                GameObject part = Instantiate(particleDiamond, new Vector3(other.gameObject.transform.position.x, other.gameObject.transform.position.y, other.gameObject.transform.position.z + 4f), Quaternion.identity) as GameObject;
+                Destroy(part, 2f);
             }
-
-            
         }
     }
-
-    void ExitSlide()
-    {
-        CapsuleCollider coll = gameObject.GetComponent<CapsuleCollider>();
-        //vado a ripristinare il capsule collaider
-        coll.height = colHeight;
-        coll.radius = colRadius;
-        coll.center = new Vector3(0, colCenterY, colCenterZ);
-
-        slide = false;
-    }
+    #endregion
 
     public void Replay()
     {
