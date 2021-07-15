@@ -15,6 +15,7 @@ public class PoteriManager : MonoBehaviour
 
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material bilocazioneMaterial;
+    public float timeBilocazione = 4f;
 
     public bool canBullet = true;
     public bool canInvisibile = true;
@@ -76,21 +77,29 @@ public class PoteriManager : MonoBehaviour
     //Bilocazione
     public void StartBilocazione()
     {
-        Debug.Log("entro");
-        var all = GameObject.FindGameObjectsWithTag("terrain");
-        foreach(var g in all)
+        //var all = GameObject.FindGameObjectsWithTag("terrain");
+        //foreach(var g in all)
+        //{
+        //    g.GetComponent<Renderer>().material = bilocazioneMaterial;
+        //}
+        //Invoke("EndBilocazione", 5f);
+
+        if (canBilocazione && !BilocazioneManager.current.bilocazione)
         {
-            g.GetComponent<Renderer>().material = bilocazioneMaterial;
+            canBilocazione = false;
+            BilocazioneManager.current.StartBilocazione();
+            Invoke("EndBilocazione", timeBilocazione);
         }
-        Invoke("EndBilocazione", 5f);
     }
 
     public void EndBilocazione()
     {
-        var all = GameObject.FindGameObjectsWithTag("terrain");
-        foreach (var g in all)
-        {
-            g.GetComponent<Renderer>().material = normalMaterial;
-        }
+        //var all = GameObject.FindGameObjectsWithTag("terrain");
+        //foreach (var g in all)
+        //{
+        //    g.GetComponent<Renderer>().material = normalMaterial;
+        //}
+
+        BilocazioneManager.current.EndBilocazione();
     }
 }

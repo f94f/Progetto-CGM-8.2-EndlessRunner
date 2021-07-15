@@ -76,13 +76,14 @@ public class PlayerMovement : MonoBehaviour
                 CanvasButtons.SetActive(true);
 
                 ScoreManagerScript.current.StartScore();
-
-                PlatformManager.current.gameOver = false;
+                AudioManageScript.current.PlayRunning();
             }
         }
         else
         {
-            if (PlatformManager.current.gameOver)
+            if (PlatformSpawnerScript.current.gameOver)
+                return;
+            if (BilocazioneManager.current.bilocazione)
                 return;
 
             if (SwipeManager.IsSwipingUp())  //se c'è lo swipe verso sopra, salto
@@ -214,21 +215,24 @@ public class PlayerMovement : MonoBehaviour
             ScoreManagerScript.current.StopScore();
             PlatformSpawnerScript.current.gameOver = true;
             moveFoward = false;
+            AudioManageScript.current.PlayGameOver();
         }
         else if (other.gameObject.tag == "fence")
         {
             animator.SetTrigger("fall2");
             ScoreManagerScript.current.StopScore();
             rb.velocity = -Vector3.up * speedRuning + transform.forward * speedRuning;
-            PlatformManager.current.gameOver = true;
+            PlatformSpawnerScript.current.gameOver = true;
+            AudioManageScript.current.PlayGameOver();
         }
         else if (other.gameObject.tag == "fall")
         {
             animator.SetTrigger("fall2");
             ScoreManagerScript.current.StopScore();
             rb.velocity = -Vector3.up * speedRuning;
-            PlatformManager.current.gameOver = true;
+            PlatformSpawnerScript.current.gameOver = true;
             moveFoward = false;
+            AudioManageScript.current.PlayGameOver();
         }
         else if (other.gameObject.tag == "diamond")
         {

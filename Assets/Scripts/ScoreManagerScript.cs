@@ -33,7 +33,11 @@ public class ScoreManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (score % PoteriManager.current.passiBullet == 0)
+            PoteriManager.current.canBullet = true;
+
+        if (score % PoteriManager.current.passiBilocazione == 0)
+            PoteriManager.current.canBilocazione = true;
     }
 
     public void StartScore()
@@ -56,15 +60,6 @@ public class ScoreManagerScript : MonoBehaviour
                 highScorePlayed = true;
                 AudioManageScript.current.PlaySound(highScoreFx);
             }
-        }
-
-        if (score%PoteriManager.current.passiBullet == 0)
-            PoteriManager.current.canBullet = true;
-
-        if (score%PoteriManager.current.passiBilocazione == 0)
-        {
-            PoteriManager.current.canBilocazione = true;
-            PoteriManager.current.StartBilocazione();
         }
     }
 

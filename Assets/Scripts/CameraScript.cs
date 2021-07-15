@@ -20,12 +20,20 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //questo serve a resettare la posizione della cam alla stessa posizione che aveva inzialmente rispetto al player
-        transform.position = player.TransformPoint(offsetPosition);
+        if (player != null)
+        {
+            //questo serve a resettare la posizione della cam alla stessa posizione che aveva inzialmente rispetto al player
+            transform.position = player.TransformPoint(offsetPosition);
 
-        var targetRotation = Quaternion.LookRotation(player.position -
-                                                     new Vector3(transform.position.x, transform.position.y - 2f,
-                                                         transform.position.z));
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxAngle);
+            var targetRotation = Quaternion.LookRotation(player.position -
+                                                         new Vector3(transform.position.x, transform.position.y - 2f,
+                                                             transform.position.z));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, maxAngle);
+        }
+    }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
     }
 }

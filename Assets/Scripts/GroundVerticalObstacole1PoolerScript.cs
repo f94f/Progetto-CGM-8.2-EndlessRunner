@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GroundVerticalObstacole1PoolerScript : MonoBehaviour
 {
+    [SerializeField] private Transform folder;
+
     public static GroundVerticalObstacole1PoolerScript current; //per interfecciare con altri script, in moda da richiamarla
     public GameObject pooledObject;
     public int pooledAmount = 1; //totale di oggetti che metteremo di piattaforme verticali
@@ -23,6 +25,7 @@ public class GroundVerticalObstacole1PoolerScript : MonoBehaviour
         for (int i = 0; i < pooledAmount; i++)
         {
             GameObject newObject = (GameObject)Instantiate(pooledObject); //dentro newGameObject istanzio un nuovo oggetto
+            newObject.transform.parent = folder;
             newObject.SetActive(false); //ho creato l'oggetto e finchè è false non appare
             pooledObjects.Add(newObject);
         }
@@ -41,17 +44,12 @@ public class GroundVerticalObstacole1PoolerScript : MonoBehaviour
 
         if (willGrow) //Se willgrow è true
         {
-            GameObject newObject = (GameObject)Instantiate(pooledObject); //istanzio il gameobject del prefab 
+            GameObject newObject = (GameObject)Instantiate(pooledObject); //istanzio il gameobject del prefab
+            newObject.transform.parent = folder;
             pooledObjects.Add(newObject); //si aggiunte il nuovo oggetto alla lista
             return (newObject); //Ritorna l'oggetto istanziato
         }
 
         return null;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
