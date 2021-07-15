@@ -108,6 +108,9 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
+            float acceleration = Input.acceleration.x * Time.deltaTime;
+            transform.Translate(acceleration, 0, 0);
+
             // Muovo il player
             //transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.forward, Time.deltaTime * speed);
             //transform.position = Vector3.MoveTowards(transform.position, new Vector3(xPos[xPosIndex], yPos, transform.position.z), Time.deltaTime * speed);
