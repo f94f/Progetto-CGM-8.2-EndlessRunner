@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PoteriManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
 
     [SerializeField] private BulletManager bullet;
+    [SerializeField] private Button btnBullet;
 
     [SerializeField] private Material invisibleMaterial;
+    [SerializeField] private Text invisibleContator;
     private Material defaultMaterial;
     private bool isInvisible;
     public float timeInvisible = 1f;
 
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material bilocazioneMaterial;
+    [SerializeField] private Button btnBilocazione;
     public float timeBilocazione = 4f;
 
     public bool canBullet = true;
@@ -31,6 +35,13 @@ public class PoteriManager : MonoBehaviour
     {
         current = this; //è un istanza di questo script, serve per interfacciare altri script con questo
         defaultMaterial = player.GetComponent<Renderer>().material; //Salvo il materiale principale come default
+        invisibleContator.text = maxInvisibilita.ToString();  //setto il numero massimo per l'invisibilità
+    }
+
+    private void Update()
+    {
+        btnBullet.interactable = canBullet;
+        btnBilocazione.interactable = canBilocazione;
     }
 
     //Pugno distruttore
@@ -57,6 +68,7 @@ public class PoteriManager : MonoBehaviour
             maxInvisibilita--;
             player.GetComponent<Renderer>().material = invisibleMaterial;
             Invoke("TurnNormal", timeInvisible);
+            invisibleContator.text = maxInvisibilita.ToString();
 
             if (maxInvisibilita == 0)
                 canInvisibile = false;

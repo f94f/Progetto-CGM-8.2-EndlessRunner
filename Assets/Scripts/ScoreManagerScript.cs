@@ -33,10 +33,10 @@ public class ScoreManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (score % PoteriManager.current.passiBullet == 0)
+        if (score!=0 && score % PoteriManager.current.passiBullet == 0)
             PoteriManager.current.canBullet = true;
 
-        if (score % PoteriManager.current.passiBilocazione == 0)
+        if (score != 0 && score % PoteriManager.current.passiBilocazione == 0)
             PoteriManager.current.canBilocazione = true;
     }
 

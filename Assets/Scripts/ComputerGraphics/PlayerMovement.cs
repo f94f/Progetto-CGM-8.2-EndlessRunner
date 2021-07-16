@@ -28,8 +28,6 @@ public class PlayerMovement : MonoBehaviour
 
     int turn;// mi serve per sapere da che parte è girato il player
 
-    [SerializeField] private Transform movePoint; //Per muovere il personaggio dentro la corsia
-    [SerializeField] private LayerMask whatStopsMovement; //Per non andare oltre
     public float moveSpeed = 5f;
 
 
@@ -108,12 +106,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
-            float acceleration = Input.acceleration.x * Time.deltaTime;
+            float acceleration = Input.acceleration.x * Time.deltaTime * moveSpeed;
             transform.Translate(acceleration, 0, 0);
 
             // Muovo il player
-            //transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.forward, Time.deltaTime * speed);
-            //transform.position = Vector3.MoveTowards(transform.position, new Vector3(xPos[xPosIndex], yPos, transform.position.z), Time.deltaTime * speed);
             if (moveFoward)
                 transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, yPos, transform.position.z) + transform.forward, Time.deltaTime * speedRuning);
         }

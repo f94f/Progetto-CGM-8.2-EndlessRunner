@@ -9,10 +9,10 @@ using UnityEngine.SceneManagement;
 public class PlayerMovementBilocazione : MonoBehaviour
 {
     [SerializeField] private Transform spawn;
-    [SerializeField] private GameObject CanvasButtons;
     [SerializeField] private AudioClip diamondFx;
     [SerializeField] private GameObject particleDiamond;
     [SerializeField] private float speedRuning;
+    [SerializeField] private float moveSpeed;
 
     private bool jumping; //serve per sapere se già saltando
     private bool slide; ////serve per sapere se già slide
@@ -20,11 +20,6 @@ public class PlayerMovementBilocazione : MonoBehaviour
     private Animator animator;  //private ?
     private float colHeight, colRadius, colCenterY, colCenterZ;
 
-    int turn;// mi serve per sapere da che parte è girato il player
-
-    /*
-     * VERSINE 2
-     */
     [SerializeField] private AnimationCurve jumpCurve;
     private float jumpTimer;
     private float yPos;
@@ -68,9 +63,10 @@ public class PlayerMovementBilocazione : MonoBehaviour
             }
         }
 
+        float acceleration = Input.acceleration.x * Time.deltaTime * moveSpeed;
+        transform.Translate(acceleration, 0, 0);
+
         // Muovo il player
-        //transform.position = Vector3.MoveTowards(transform.position, transform.position + Vector3.forward, Time.deltaTime * speed);
-        //transform.position = Vector3.MoveTowards(transform.position, new Vector3(xPos[xPosIndex], yPos, transform.position.z), Time.deltaTime * speed);
         if (moveFoward)
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, yPos, transform.position.z) + transform.forward, Time.deltaTime * speedRuning);
     }
