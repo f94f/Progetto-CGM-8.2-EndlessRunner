@@ -36,10 +36,7 @@ public class PoteriManager : MonoBehaviour
         current = this; //è un istanza di questo script, serve per interfacciare altri script con questo
         defaultMaterial = player.GetComponent<Renderer>().material; //Salvo il materiale principale come default
         invisibleContator.text = maxInvisibilita.ToString();  //setto il numero massimo per l'invisibilità
-    }
 
-    private void Update()
-    {
         btnBullet.interactable = canBullet;
         btnBilocazione.interactable = canBilocazione;
     }
@@ -51,6 +48,7 @@ public class PoteriManager : MonoBehaviour
         {
             bullet.ShootBullet(player);
             canBullet = false;
+            btnBullet.interactable = canBullet;
         }
     }
 
@@ -89,16 +87,10 @@ public class PoteriManager : MonoBehaviour
     //Bilocazione
     public void StartBilocazione()
     {
-        //var all = GameObject.FindGameObjectsWithTag("terrain");
-        //foreach(var g in all)
-        //{
-        //    g.GetComponent<Renderer>().material = bilocazioneMaterial;
-        //}
-        //Invoke("EndBilocazione", 5f);
-
         if (canBilocazione && !BilocazioneManager.current.bilocazione)
         {
             canBilocazione = false;
+            btnBilocazione.interactable = canBilocazione;
             BilocazioneManager.current.StartBilocazione();
             Invoke("EndBilocazione", timeBilocazione);
         }
@@ -106,12 +98,6 @@ public class PoteriManager : MonoBehaviour
 
     public void EndBilocazione()
     {
-        //var all = GameObject.FindGameObjectsWithTag("terrain");
-        //foreach (var g in all)
-        //{
-        //    g.GetComponent<Renderer>().material = normalMaterial;
-        //}
-
         BilocazioneManager.current.EndBilocazione();
     }
 }
