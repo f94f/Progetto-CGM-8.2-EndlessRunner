@@ -41,8 +41,6 @@ public class PlayerMovement : MonoBehaviour
         jumping = false;
         moveFoward = true;
         animator.SetBool("idle", true);
-
-        //movePoint.parent = null;
     }
 
     // Update is called once per frame
@@ -162,34 +160,6 @@ public class PlayerMovement : MonoBehaviour
         coll.center = new Vector3(0, colCenterY, colCenterZ);
 
         slide = false;
-    }
-
-    void MoveLeft()
-    {
-        Debug.Log("Move Left");
-
-        //if (Physics2D.OverlapCircle(movePoint.position + new Vector3(-1, 0f, 0f), 0.2f, whatStopsMovement))
-        //{
-        //    movePoint.position += new Vector3(-1, 0f, 0f);
-        //}
-
-        //transform.position = Vector3.MoveTowards(transform.position, new Vector3(-1, 0f, 0f), moveSpeed * Time.deltaTime);
-
-        transform.position += new Vector3(-0.05f, 0f, 0f);
-    }
-
-    void MoveRigth()
-    {
-        Debug.Log("Move Rigth");
-
-        //if (Physics2D.OverlapCircle(movePoint.position + new Vector3(-1, 0f, 0f), 0.2f, whatStopsMovement))
-        //{
-        //    movePoint.position += new Vector3(1, 0f, 0f);
-        //}
-
-        //transform.position = Vector3.MoveTowards(transform.position, new Vector3(1, 0f, 0f), moveSpeed * Time.deltaTime);
-        if (Input.GetMouseButtonDown(0))
-            transform.position += new Vector3(1f * Time.deltaTime, 0f, 0f);
     }
     #endregion
 

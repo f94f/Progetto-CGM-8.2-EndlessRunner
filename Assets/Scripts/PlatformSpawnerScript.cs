@@ -340,7 +340,7 @@ public class PlatformSpawnerScript : MonoBehaviour
 
         }
  
-        }
+    }
 
     void SpawnHorizontalRight()
     {
@@ -395,8 +395,6 @@ public class PlatformSpawnerScript : MonoBehaviour
                     SpawnCornerUp();
                 }
             }
-
-
         }
     }
 
@@ -432,8 +430,6 @@ public class PlatformSpawnerScript : MonoBehaviour
             CancelInvoke("SpawnHorizontalLeft");
             //con questo comando decremento counterup di 1. se quello che rimane è minore uguale a zero usciamo dal cancelinvoke,
             //che cancella l'invocazione, ossia la ripetizione
-
-
              
             if (!gameOver)
             {
@@ -455,9 +451,6 @@ public class PlatformSpawnerScript : MonoBehaviour
                     SpawnCornerUp();
                 }
             }
-            
-
-
         }
     }
 
@@ -480,9 +473,6 @@ public class PlatformSpawnerScript : MonoBehaviour
         newObject.SetActive(true);
 
         //subito dopo metto una piattaforma normale altrimenti ci sarebbe subito l'angolo
-
-        
-
         pos = lastPos;
         pos.x += size;
 
@@ -491,7 +481,6 @@ public class PlatformSpawnerScript : MonoBehaviour
         newObject = GroundVerticalPoolerScript.current.GetPooledObject();
 
         if (newObject == null) return;
-
 
         newObject.transform.position = pos;
         newObject.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -524,11 +513,7 @@ public class PlatformSpawnerScript : MonoBehaviour
         newObject.transform.rotation = Quaternion.Euler(0, 90, 0);
         newObject.SetActive(true);
 
-
-
-
         //ne metto una normale altrimenti avrei subito l'angolo
-
 
         pos = lastPos;
         pos.x += size;
@@ -538,7 +523,6 @@ public class PlatformSpawnerScript : MonoBehaviour
         newObject = GroundVerticalPoolerScript.current.GetPooledObject();
 
         if (newObject == null) return;
-
 
         newObject.transform.position = pos;
         newObject.transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -551,7 +535,6 @@ public class PlatformSpawnerScript : MonoBehaviour
 
         //metto l'angolo verso l'alto
         SpawnCornerUp();
-
     }
 
     void SpawnEmptyHorizontalLeft()
@@ -649,7 +632,6 @@ public class PlatformSpawnerScript : MonoBehaviour
 
     void SpawnCornerUp()
     {
-
         Vector3 pos = lastPos;
         if (direction == 2)
         {
@@ -657,7 +639,6 @@ public class PlatformSpawnerScript : MonoBehaviour
             GameObject newObject = Corner3PoolerScript.current.GetPooledObject();
 
             if (newObject == null) return;
-
 
             newObject.transform.position = pos;
             newObject.transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -670,7 +651,6 @@ public class PlatformSpawnerScript : MonoBehaviour
             GameObject newObject = Corner4PoolerScript.current.GetPooledObject();
 
             if (newObject == null) return;
-
 
             newObject.transform.position = pos;
             newObject.transform.rotation = Quaternion.Euler(0, 0, 0);

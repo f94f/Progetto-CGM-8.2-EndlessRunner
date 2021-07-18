@@ -1423,7 +1423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 845450160}
-  bullet: {fileID: 8571156277052866973, guid: 5d0b97cc50336a54c933018f1db0415e, type: 3}
+  bullet: {fileID: 5509910226279408143, guid: fe82a8d80e5c47f4a9ebc51988fd850a, type: 3}
   btnBullet: {fileID: 1974285350}
   invisibleMaterial: {fileID: 2100000, guid: a3c305f53d30d3045b076a58ca62cf44, type: 2}
   invisibleContator: {fileID: 303247302}
@@ -1435,7 +1435,7 @@ MonoBehaviour:
   canBullet: 1
   canInvisibile: 1
   canBilocazione: 0
-  passiBullet: 80
+  passiBullet: 50
   passiBilocazione: 300
   maxInvisibilita: 3
 --- !u!114 &769032855
@@ -2707,7 +2707,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1233914338
 RectTransform:
   m_ObjectHideFlags: 0

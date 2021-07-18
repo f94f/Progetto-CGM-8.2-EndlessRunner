@@ -36,7 +36,10 @@ public class PoteriManager : MonoBehaviour
         current = this; //è un istanza di questo script, serve per interfacciare altri script con questo
         defaultMaterial = player.GetComponent<Renderer>().material; //Salvo il materiale principale come default
         invisibleContator.text = maxInvisibilita.ToString();  //setto il numero massimo per l'invisibilità
+    }
 
+    private void Update()
+    {
         btnBullet.interactable = canBullet;
         btnBilocazione.interactable = canBilocazione;
     }

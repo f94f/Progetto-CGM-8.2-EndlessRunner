@@ -7,14 +7,17 @@ public class ScoreManagerScript : MonoBehaviour
 {
     public Text ScoreText;
     public Text HighScoreText;
-    int score;
     public GameObject scoreTxtObj;
     public GameObject panelTxtObj;
     public GameObject highscoreTxtObj;
-
     public AudioClip highScoreFx;
+    
+    private int score;
+    private bool highScorePlayed;
 
-    bool highScorePlayed;
+    private int lastCheckBullet;
+    private int lastCheckBilocazione;
+
     public static ScoreManagerScript current; //per interfecciare con altri script, in moda da richiamarla
 
     private void Awake() //la void viene letta quando il gioco parte
@@ -28,16 +31,9 @@ public class ScoreManagerScript : MonoBehaviour
         score = 0;
         ScoreText.text = score.ToString();
         highScorePlayed = false;
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (score!=0 && score % PoteriManager.current.passiBullet == 0)
-            PoteriManager.current.canBullet = true;
-
-        if (score != 0 && score % PoteriManager.current.passiBilocazione == 0)
-            PoteriManager.current.canBilocazione = true;
+        lastCheckBullet = PoteriManager.current.passiBullet;
+        lastCheckBilocazione = PoteriManager.current.passiBilocazione;
     }
 
     public void StartScore()
@@ -46,30 +42,26 @@ public class ScoreManagerScript : MonoBehaviour
         scoreTxtObj.SetActive(true);
     }
 
-    void IncrementeScore()
+    private void IncrementeScore()
     {
         score += 1;
         ScoreText.text = score.ToString();
 
-        //Se ha superato l'high Score
-        if (PlayerPrefs.HasKey("highScore") && !highScorePlayed)
-        {
-            if (score > PlayerPrefs.GetInt("highScore"))
-            {
-                highscoreTxtObj.SetActive(true);
-                highScorePlayed = true;
-                AudioManageScript.current.PlaySound(highScoreFx);
-            }
-        }
+        NewHighScore();
     }
 
     public void DiamondScore()
     {
-        int rand = UnityEngine.Random.Range(0, 6);
+        int rand = Random.Range(0, 6);
 
         score += rand;
         ScoreText.text = score.ToString();
 
+        NewHighScore();
+    }
+
+    private void NewHighScore()
+    {
         //Se ha superato l'high Score
         if (PlayerPrefs.HasKey("highScore") && !highScorePlayed)
         {
@@ -81,6 +73,18 @@ public class ScoreManagerScript : MonoBehaviour
             }
         }
 
+        //Conta lo score per i poteri
+        if (score >= lastCheckBullet)
+        {
+            PoteriManager.current.canBullet = true;
+            lastCheckBullet += PoteriManager.current.passiBullet;
+        }
+
+        if (score >= lastCheckBilocazione)
+        {
+            PoteriManager.current.canBilocazione = true;
+            lastCheckBilocazione += PoteriManager.current.passiBilocazione;
+        }
     }
 
     public void StopScore()
