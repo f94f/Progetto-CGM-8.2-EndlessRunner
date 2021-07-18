@@ -21,26 +21,15 @@ public class PlayerMovement : MonoBehaviour
 
     float colHeight, colRadius, colCenterY, colCenterZ;
     
-    [SerializeField]
-    float speedRuning;  //private ?
-    [SerializeField]
-    float jump;  //private ?
-
-    int turn;// mi serve per sapere da che parte è girato il player
+    [SerializeField] private float speedRuning;
+    [SerializeField] private float jump;
 
     public float moveSpeed = 5f;
 
-
-    /*
-     * VERSINE 2
-     */
     public AnimationCurve jumpCurve;
     private float jumpTimer;
     private float yPos;
     private bool moveFoward;
-
-    public float[] xPos;
-    private int xPosIndex = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -64,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButtonDown(0))  //se c'è un click dell'utente sullo schermo, facciamo partire il personaggio
             {
                 started = true;
-                turn = 1; //Up
                 //Faccio partire lo spawn delle piattaforme
                 PlatformSpawnerScript.current.BeginToSpawn();
 
