@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 3409075312449576814}
   - component: {fileID: 3409075312449576815}
   - component: {fileID: 3409075312449576812}
-  - component: {fileID: 3409075312449576813}
+  - component: {fileID: 8439520534707642264}
   m_Layer: 0
   m_Name: Clone
   m_TagString: Player
@@ -578,7 +578,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3409075312449576813
+--- !u!114 &8439520534707642264
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -587,14 +587,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2562018492460130849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0685d15bb9c548d46bb98a22030aed7c, type: 3}
+  m_Script: {fileID: 11500000, guid: d4b66ada39481914d93f552d50067ef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawn: {fileID: 0}
-  CanvasButtons: {fileID: 0}
   diamondFx: {fileID: 8300000, guid: e681fb7161ef8449ca57f0f939c37ffa, type: 3}
-  particleDiamond: {fileID: 2707713362195040200, guid: 944bd58a531234a6da8780919f5c0e62, type: 3}
+  particleDiamond: {fileID: 0}
   speedRuning: 12
+  moveSpeed: 5
   jumpCurve:
     serializedVersion: 2
     m_Curve:
@@ -646,7 +646,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  xPos: []
 --- !u!1 &2591414534378262575
 GameObject:
   m_ObjectHideFlags: 0

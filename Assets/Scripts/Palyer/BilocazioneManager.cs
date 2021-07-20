@@ -67,7 +67,7 @@ public class BilocazioneManager : MonoBehaviour
         }
     }
 
-    void SetPlayer()
+    private void SetPlayer()
     {
         playerClone.transform.position = spawn.transform.position;
     }

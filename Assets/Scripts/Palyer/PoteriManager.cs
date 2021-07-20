@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PoteriManager : MonoBehaviour
 {
+    public static PoteriManager current; //per interfecciare con altri script, in moda da richiamarla
+    
     [SerializeField] private GameObject player;
 
     [SerializeField] private BulletManager bullet;
@@ -28,8 +30,6 @@ public class PoteriManager : MonoBehaviour
     public int passiBullet = 50;
     public int passiBilocazione = 100;
     public int maxInvisibilita = 3;
-
-    public static PoteriManager current; //per interfecciare con altri script, in moda da richiamarla
 
     private void Awake() //la void viene letta quando il gioco parte
     {
@@ -63,7 +63,7 @@ public class PoteriManager : MonoBehaviour
 
     public void TurnInvisible()
     {
-        if (canInvisibile)
+        if (canInvisibile && !isInvisible)
         {
             isInvisible = true;
             maxInvisibilita--;
@@ -94,6 +94,7 @@ public class PoteriManager : MonoBehaviour
         {
             canBilocazione = false;
             btnBilocazione.interactable = canBilocazione;
+
             BilocazioneManager.current.StartBilocazione();
             Invoke("EndBilocazione", timeBilocazione);
         }
