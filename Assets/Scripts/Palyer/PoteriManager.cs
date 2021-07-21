@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(-1)]
 public class PoteriManager : MonoBehaviour
 {
     public static PoteriManager current; //per interfecciare con altri script, in moda da richiamarla
@@ -102,6 +103,7 @@ public class PoteriManager : MonoBehaviour
 
     public void EndBilocazione()
     {
+        CancelInvoke("EndBilocazione");
         BilocazioneManager.current.EndBilocazione();
     }
 }

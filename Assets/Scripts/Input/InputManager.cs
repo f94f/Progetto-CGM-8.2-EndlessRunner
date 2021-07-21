@@ -1,11 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[DefaultExecutionOrder(-2)] //Run beafor all scripts
+[DefaultExecutionOrder(-3)] //Run beafor all scripts
 public class InputManager : Singleton<InputManager>
 {
-    //public static InputManager instance;
-
     #region Events
     public delegate void StartTouch(Vector2 position, float time);
     public event StartTouch OnStartTouch;
@@ -19,7 +17,6 @@ public class InputManager : Singleton<InputManager>
 
     private void Awake()
     {
-        //instance = this;
         playerControls = new PlayerControls();
         mainCamera = Camera.main;
     }
@@ -27,13 +24,15 @@ public class InputManager : Singleton<InputManager>
     private void OnEnable()
     {
         playerControls.Enable();
-        InputSystem.EnableDevice(Accelerometer.current);
+        if (Accelerometer.current != null)
+            InputSystem.EnableDevice(Accelerometer.current);
     }
 
     private void OnDisable()
     {
         playerControls.Disable();
-        InputSystem.DisableDevice(Accelerometer.current);
+        if (Accelerometer.current != null)
+            InputSystem.DisableDevice(Accelerometer.current);
     }
 
     void Start()
@@ -71,5 +70,11 @@ public class InputManager : Singleton<InputManager>
         this.action = action;
     }
 
-    
+    public Vector3 GetAccelorometer()
+    {
+        if (Accelerometer.current != null)
+            return Accelerometer.current.acceleration.ReadValue();
+        else
+            return Vector3.zero;
+    }
 }

@@ -14,9 +14,6 @@ public class SwipeDetection : MonoBehaviour
     private Vector2 endPosition;
     private float endTime;
 
-    private bool startLevel;
-
-
     private void Awake()
     {
         inputManager = InputManager.Instance;
@@ -54,7 +51,6 @@ public class SwipeDetection : MonoBehaviour
         {
             if (Vector3.Distance(startPosition, endPosition) < minimumDistance) //è un tocco
             {
-                startLevel = true;
                 InputManager.Instance.SetAction(Swipe.Touch);
             }
             else if (Vector3.Distance(startPosition, endPosition) >= minimumDistance) //è uno swipe
@@ -74,25 +70,21 @@ public class SwipeDetection : MonoBehaviour
         if (Vector2.Dot(Vector2.up, direction) > directionThreshold)
         {
             //Debug.Log("Swipe Up");
-            //PlayerManager.current.Jump();
             InputManager.Instance.SetAction(Swipe.Up);
         }
         else if (Vector2.Dot(Vector2.down, direction) > directionThreshold)
         {
             //Debug.Log("Swipe Down");
-            //PlayerManager.current.Slide();
             InputManager.Instance.SetAction(Swipe.Down);
         }
         else if (Vector2.Dot(Vector2.left, direction) > directionThreshold)
         {
             //Debug.Log("Swipe Left");
-            //PlayerManager.current.TurnLeft();
             InputManager.Instance.SetAction(Swipe.Left);
         }
         else if (Vector2.Dot(Vector2.right, direction) > directionThreshold)
         {
             //Debug.Log("Swipe Right");
-            //PlayerManager.current.TurnRight();
             InputManager.Instance.SetAction(Swipe.Right);
         }
     }

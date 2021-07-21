@@ -38,8 +38,10 @@ public class PlayerManagerBilocazione : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!BilocazioneManager.current.bilocazione)
+        moveFoward = BilocazioneManager.current.bilocazione;
+        if (!moveFoward)
             return;
+
         GetActions();
 
         if (jumping)
@@ -56,7 +58,7 @@ public class PlayerManagerBilocazione : MonoBehaviour
         }
 
         // Movimento tra corsie
-        float acceleration = Accelerometer.current.acceleration.ReadValue().x * Time.deltaTime * moveSpeed;
+        float acceleration = InputManager.Instance.GetAccelorometer().x * Time.deltaTime * moveSpeed;
         transform.Translate(acceleration, 0, 0);
 
         // Muovo il player
@@ -102,12 +104,14 @@ public class PlayerManagerBilocazione : MonoBehaviour
 
     public void TurnLeft()
     {
-        rb.transform.Rotate(0.0f, -90.0f, 0.0f);
+        if (BilocazioneManager.current.bilocazione)
+            rb.transform.Rotate(0.0f, -90.0f, 0.0f);
     }
 
     public void TurnRight()
     {
-        rb.transform.Rotate(0.0f, 90.0f, 0.0f);
+        if (BilocazioneManager.current.bilocazione)
+            rb.transform.Rotate(0.0f, 90.0f, 0.0f);
     }
 
     public void Slide()
@@ -152,13 +156,13 @@ public class PlayerManagerBilocazione : MonoBehaviour
         {
             moveFoward = false;
             animator.SetBool("idle", false);
-            BilocazioneManager.current.EndBilocazione();
+            PoteriManager.current.EndBilocazione();
         }
         else if (other.gameObject.tag == "fall")
         {
             moveFoward = false;
             animator.SetBool("idle", false);
-            BilocazioneManager.current.EndBilocazione();
+            PoteriManager.current.EndBilocazione();
         }
         else if (other.gameObject.tag == "diamond")
         {

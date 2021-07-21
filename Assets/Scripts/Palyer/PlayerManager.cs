@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour
             }
 
             // Movimento tra corsie
-            float acceleration = Accelerometer.current.acceleration.ReadValue().x * Time.deltaTime * moveSpeed;
+            float acceleration = InputManager.Instance.GetAccelorometer().x * Time.deltaTime * moveSpeed;
             transform.Translate(acceleration, 0, 0);
 
             // Muovo il player
@@ -116,7 +116,7 @@ public class PlayerManager : MonoBehaviour
 
     public void Jump()
     {
-        if (!BilocazioneManager.current.bilocazione)
+        if (started && !BilocazioneManager.current.bilocazione)
         {
             if (!jumping)
             {
@@ -134,12 +134,14 @@ public class PlayerManager : MonoBehaviour
 
     public void TurnLeft()
     {
-        rb.transform.Rotate(0.0f, -90.0f, 0.0f);
+        if (started && !BilocazioneManager.current.bilocazione)
+            rb.transform.Rotate(0.0f, -90.0f, 0.0f);
     }
 
     public void TurnRight()
     {
-        rb.transform.Rotate(0.0f,90.0f,0.0f);
+        if (started && !BilocazioneManager.current.bilocazione)
+            rb.transform.Rotate(0.0f,90.0f,0.0f);
     }
 
     public void Slide()

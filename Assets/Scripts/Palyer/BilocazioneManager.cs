@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-2)]
 public class BilocazioneManager : MonoBehaviour
 {
     [SerializeField] private GameObject plane;
@@ -42,7 +43,6 @@ public class BilocazioneManager : MonoBehaviour
         listaPlatforms.Add(go);
 
         CreateDiamonds(go.transform, bounds);
-        SetPlayer();
     }
 
     void CreateDiamonds (Transform parent, Bounds bounds)
@@ -70,6 +70,7 @@ public class BilocazioneManager : MonoBehaviour
     private void SetPlayer()
     {
         playerClone.transform.position = spawn.transform.position;
+        playerClone.transform.rotation = Quaternion.identity;
     }
 
     public void StartBilocazione()
@@ -80,6 +81,8 @@ public class BilocazioneManager : MonoBehaviour
 
         for (int i = 0; i < 40; i++)
             CreatePLatform();
+        
+        SetPlayer();
 
         Camera.main.GetComponent<CameraScript>().SetPlayer(playerClone.transform);
     }
