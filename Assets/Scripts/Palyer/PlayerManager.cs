@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -65,8 +66,8 @@ public class PlayerManager : MonoBehaviour
                 }
             }
 
-            // Movimento tra corsiee
-            float acceleration = Input.acceleration.x * Time.deltaTime * moveSpeed;
+            // Movimento tra corsie
+            float acceleration = Accelerometer.current.acceleration.ReadValue().x * Time.deltaTime * moveSpeed;
             transform.Translate(acceleration, 0, 0);
 
             // Muovo il player

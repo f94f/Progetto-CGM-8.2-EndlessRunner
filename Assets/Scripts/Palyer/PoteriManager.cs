@@ -33,9 +33,9 @@ public class PoteriManager : MonoBehaviour
 
     private void Awake() //la void viene letta quando il gioco parte
     {
-        current = this; //è un istanza di questo script, serve per interfacciare altri script con questo
+        current = this; //? un istanza di questo script, serve per interfacciare altri script con questo
         defaultMaterial = player.GetComponent<Renderer>().material; //Salvo il materiale principale come default
-        invisibleContator.text = maxInvisibilita.ToString();  //setto il numero massimo per l'invisibilità
+        invisibleContator.text = maxInvisibilita.ToString();  //setto il numero massimo per l'invisibilit?
     }
 
     private void Update()
@@ -55,7 +55,7 @@ public class PoteriManager : MonoBehaviour
         }
     }
 
-    //Invisibilità
+    //Invisibilit?
     public void SetDefaultMaterial(Material material)
     {
         defaultMaterial = material;

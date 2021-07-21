@@ -27,11 +27,13 @@ public class InputManager : Singleton<InputManager>
     private void OnEnable()
     {
         playerControls.Enable();
+        InputSystem.EnableDevice(Accelerometer.current);
     }
 
     private void OnDisable()
     {
         playerControls.Disable();
+        InputSystem.DisableDevice(Accelerometer.current);
     }
 
     void Start()
