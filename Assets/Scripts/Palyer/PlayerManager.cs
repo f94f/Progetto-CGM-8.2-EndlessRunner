@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager current;
-
     [SerializeField] private Image startImage;
     [SerializeField] private GameObject CanvasButtons;
     [SerializeField] private AudioClip diamondFx;
@@ -30,16 +28,12 @@ public class PlayerManager : MonoBehaviour
     private float jumpTimer;
     private float yPos;
 
-    private void Awake()
-    {
-        current = this;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+
         started = false;
         jumping = false;
         moveFoward = true;
@@ -49,6 +43,8 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GetActions();
+
         if (started)  //se il gioco non è partito
         {
             if (PlatformSpawnerScript.current.gameOver)
@@ -81,20 +77,40 @@ public class PlayerManager : MonoBehaviour
     }
 
     #region ACTIONS
+    private void GetActions()
+    {
+        Swipe swipe = InputManager.Instance.GetAction();
+        if (swipe == Swipe.Touch)
+            StartLevel();
+        else if (swipe == Swipe.Up)
+            Jump();
+        else if (swipe == Swipe.Down)
+            Slide();
+        else if (swipe == Swipe.Left)
+            TurnLeft();
+        else if (swipe == Swipe.Right)
+            TurnRight();
+
+        InputManager.Instance.SetAction(Swipe.None);
+    }
+
     public void StartLevel()
     {
-        started = true;
+        if (!started)
+        {
+            started = true;
 
-        //Faccio partire lo spawn delle piattaforme
-        PlatformSpawnerScript.current.BeginToSpawn();
+            //Faccio partire lo spawn delle piattaforme
+            PlatformSpawnerScript.current.BeginToSpawn();
 
-        animator.SetBool("idle", false);  //imposto la variabile idle a false, succede che poi si passa in RunForward
+            animator.SetBool("idle", false);  //imposto la variabile idle a false, succede che poi si passa in RunForward
 
-        startImage.enabled = false;
-        CanvasButtons.SetActive(true);
+            startImage.enabled = false;
+            CanvasButtons.SetActive(true);
 
-        ScoreManagerScript.current.StartScore();
-        AudioManageScript.current.PlayRunning();
+            ScoreManagerScript.current.StartScore();
+            AudioManageScript.current.PlayRunning();
+        }
     }
 
     public void Jump()
@@ -117,14 +133,12 @@ public class PlayerManager : MonoBehaviour
 
     public void TurnLeft()
     {
-        if (!BilocazioneManager.current.bilocazione)
-            rb.transform.Rotate(0.0f, -90.0f, 0.0f);
+        rb.transform.Rotate(0.0f, -90.0f, 0.0f);
     }
 
     public void TurnRight()
     {
-        if (!BilocazioneManager.current.bilocazione)
-            rb.transform.Rotate(0.0f,90.0f,0.0f);
+        rb.transform.Rotate(0.0f,90.0f,0.0f);
     }
 
     public void Slide()

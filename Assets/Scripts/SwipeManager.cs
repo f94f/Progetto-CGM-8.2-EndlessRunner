@@ -14,18 +14,19 @@ class CardinalDirection
     public static readonly Vector2 DownLeft = new Vector2 (-1, -1);
 }
  
-public enum Swipe
-{
-    None,
-    Up,
-    Down,
-    Left,
-    Right,
-    UpLeft,
-    UpRight,
-    DownLeft,
-    DownRight
-};
+//public enum Swipe
+//{
+//    None,
+//    Touch,
+//    Up,
+//    Down,
+//    Left,
+//    Right,
+//    UpLeft,
+//    UpRight,
+//    DownLeft,
+//    DownRight
+//};
  
 public class SwipeManager : MonoBehaviour
 {

@@ -17,7 +17,7 @@ public class PlatformDestroyScript : MonoBehaviour
         if(other.gameObject.tag == "Player")
         {
             //In questo caso richiamo la funzione Destroy dopo un secondo
-            Invoke("Destroy", 1f);
+            Invoke("Destroy", 5f);
         }
     }
 }

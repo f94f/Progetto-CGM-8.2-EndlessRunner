@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [DefaultExecutionOrder(-2)] //Run beafor all scripts
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
-    public static InputManager Instance;
+    //public static InputManager instance;
 
     #region Events
     public delegate void StartTouch(Vector2 position, float time);
@@ -15,10 +15,11 @@ public class InputManager : MonoBehaviour
 
     private PlayerControls playerControls;
     private Camera mainCamera;
+    private Swipe action;
 
     private void Awake()
     {
-        Instance = this;
+        //instance = this;
         playerControls = new PlayerControls();
         mainCamera = Camera.main;
     }
@@ -42,13 +43,13 @@ public class InputManager : MonoBehaviour
     private void StartTouchPrimary(InputAction.CallbackContext context)
     {
         if (OnStartTouch != null)
-            OnStartTouch(PrimaryPosition(), (float)context.startTime);
+            OnStartTouch(playerControls.Touch.PrimaryPosition.ReadValue<Vector2>(), (float)context.startTime);
     }
 
     private void EndTouchPrimary(InputAction.CallbackContext context)
     {
         if (OnEndTouch != null)
-            OnEndTouch(PrimaryPosition(), (float)context.time);
+            OnEndTouch(playerControls.Touch.PrimaryPosition.ReadValue<Vector2>(), (float)context.time);
     }
 
     public Vector2 PrimaryPosition()
@@ -57,4 +58,16 @@ public class InputManager : MonoBehaviour
         position.z = mainCamera.nearClipPlane;
         return mainCamera.ScreenToWorldPoint(position);
     }
+
+    public Swipe GetAction()
+    {
+        return action;
+    }
+
+    public void SetAction(Swipe action)
+    {
+        this.action = action;
+    }
+
+    
 }

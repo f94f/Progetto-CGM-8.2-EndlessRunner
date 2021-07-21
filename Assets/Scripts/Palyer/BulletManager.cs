@@ -11,7 +11,11 @@ public class BulletManager : MonoBehaviour
 
     public void ShootBullet(GameObject player)
     {
-        var blt = Instantiate(gameObject, player.transform.position + new Vector3(0f, 1.5f, 0f), gameObject.transform.rotation);
+        var blt = Instantiate(gameObject);
+        blt.transform.right = player.transform.forward;
+        blt.transform.Rotate(180.0f, 0.0f, 0.0f);
+        blt.transform.localPosition = player.transform.position + new Vector3(0f, 1.5f, 0f);
+
         var rb = blt.GetComponent<Rigidbody>();
         rb.velocity = player.transform.forward * bulletSpeed;  //faccio muovere il proiettile in avanti
 

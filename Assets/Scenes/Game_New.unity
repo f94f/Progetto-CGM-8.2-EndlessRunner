@@ -1469,8 +1469,8 @@ MonoBehaviour:
   canBullet: 1
   canInvisibile: 1
   canBilocazione: 0
-  passiBullet: 50
-  passiBilocazione: 10
+  passiBullet: 10
+  passiBilocazione: 300
   maxInvisibilita: 3
 --- !u!1 &810014493
 GameObject:
@@ -2610,7 +2610,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1233914338
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3243,7 +3243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9afe2a691291fcd42bfd1c4b0c16550f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumDistance: 0.05
+  minimumDistance: 1
   maximumtime: 1
   directionThreshold: 0.9
 --- !u!114 &1714223867
