@@ -1470,7 +1470,7 @@ MonoBehaviour:
   canInvisibile: 1
   canBilocazione: 0
   passiBullet: 50
-  passiBilocazione: 10
+  passiBilocazione: 300
   maxInvisibilita: 3
 --- !u!1 &810014493
 GameObject:
