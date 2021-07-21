@@ -30,7 +30,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""PrimaryPosition"",
                     ""type"": ""PassThrough"",
                     ""id"": ""e0a7b7b9-4efc-42af-b7f3-80b50bc325a1"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }

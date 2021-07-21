@@ -44,13 +44,14 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (BilocazioneManager.current.bilocazione)
+            return;
+
         GetActions();
 
         if (started)  //se il gioco non è partito
         {
             if (PlatformSpawnerScript.current.gameOver)
-                return;
-            if (BilocazioneManager.current.bilocazione)
                 return;
 
             if (jumping)

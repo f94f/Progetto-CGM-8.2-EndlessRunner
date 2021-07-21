@@ -69,6 +69,7 @@ public class PlayerManagerBilocazione : MonoBehaviour
     #region ACTIONS
     private void GetActions()
     {
+        Debug.Log("Bilocazione GetActions");
         Swipe swipe = InputManager.Instance.GetAction();
 
         if (swipe == Swipe.Up)
